@@ -1,0 +1,157 @@
+ body {
+	margin: auto; /* center in viewport */
+	width: 980px;
+}
+
+#main {
+	margin-top: 10px;
+}
+
+#leftbar {
+	display: inline-block;
+    zoom: 1; *display: inline; /* IE < 8: fake inline-block */
+    letter-spacing: normal;
+    word-spacing: normal;
+    vertical-align: top;
+    text-rendering: auto;
+	width: 200px;
+	height: 610px;
+	background-color: #648779;
+}
+
+#sudoku {
+	display: inline-block;
+    zoom: 1; *display: inline; /* IE < 8: fake inline-block */
+    letter-spacing: normal;
+    word-spacing: normal;
+    vertical-align: top;
+    text-rendering: auto;
+	width: 760px
+}
+
+#toolbar {
+	margin-top: 10px;
+	border-top: 1px solid;
+}
+
+#toolbar ul {
+	list-style: none;
+}
+
+#toolbar ul li {
+	margin: 5px 0;
+}
+
+#newGame {
+	margin-top: 10px;
+	padding: 10px;
+	border-top: 1px solid;
+	line-height: 24px;
+}
+
+#timer {
+	margin-top: 10px;
+	padding: 10px;
+	border-top: 1px solid;
+	line-height: 30px;
+	text-align: center;
+}
+
+#statusbar {
+	border-top: 1px solid;
+	margin-top: 10px;
+	padding: 10px;
+}
+
+#inputNo {
+	width: 100px;
+}
+
+#level {
+	width: 100px;
+}
+
+#headline {
+	font-size: 30px;
+	margin-bottom: 10px;
+	margin-left: 2px;
+}
+
+.smalltext {
+	font-size: 13px;
+}
+
+.togglePressed {
+	background-color: #3865b2;
+}
+
+.normalButton {
+	width: 180px;
+}
+
+.smallButton {
+	width: 70px;
+}
+
+.cspan {
+	position: absolute;
+}
+.cpad {
+    background-color: transparent;
+    border: 0 none;
+    font-size: 9pt;
+    height: 15px;
+    left: 2px;
+    padding-left: 1px;
+    padding-top: 1px;
+    position: absolute;
+    text-align: left;
+    top: -10px;
+    width: 60px;
+    z-index: 2;
+}
+.cell {
+    background-color: transparent;
+    border: 0 none;
+    font-size: 42px;
+    left: 1px;
+    position: relative;
+    text-align: center;
+    top: 1px;
+    width: 60px;
+	height: 45px;
+    z-index: 1;
+}
+
+#sudoku >table {
+	width: 600px;
+	height: 600px;
+	background-color: #000000;
+	border-collapse: separate;
+	border-spacing: 2px;
+}
+.c-grid {
+	width: 33%;
+	background-color: #ffffff;
+}
+
+.grid {
+	border-collapse: separate;
+	border-spacing: 2px;
+	width: 100%;
+	height: 100%;
+	background-color: #cccccc;
+}
+
+.grid tr{
+	height: 64px;
+	background-color: #ffffff;
+}
+
+.normalButton {
+	width: 120px;
+	height: 30px;
+}
+.puzzleEdit {
+	width: 500px;
+}

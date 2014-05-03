@@ -1,0 +1,602 @@
+<!DOCTYPE HTML>
+<html>
+<head lang="zh-cn">
+<meta charset="utf-8">
+<title>Sudoku</title>
+<script src="http://yui.yahooapis.com/3.9.1/build/yui/yui-min.js"></script>
+<link rel="stylesheet" href="sudoku.css">
+</head>
+<body>
+<div id="main">
+<div id="leftbar">
+	<span id="headline">SUDOKU 数独 </span>
+	<div id="toolbar">
+		<ul>
+			<li><button class="normalButton" id="checkGrid">检查结果</button></li>
+			<li><button class="normalButton" id="markCheck">标记模式</button></li>
+			<li><button class="normalButton" id="clearMark">清除标记</button></li>
+			<li><button class="normalButton" id="resetPuzzle">重置谜题</button></li>
+			<li><button class="normalButton" id="solvePuzzle">查看答案</button></li>
+			<li><button class="normalButton" id="undo">撤销输入</button></li>
+			<li><button class="normalButton" id="redo">恢复输入</button></li>
+		</ul>
+	</div>
+	<div id="timer">
+		<button class="normalButton" id="startTimer">开始计时</button> <br/>
+		<label id="displayTime">00:00:00</label>
+	</div>
+	<div id="newGame">
+		<select id="level">
+		  <option value ="0">简单</option>
+		  <option value ="1">中级</option>
+		  <option value="2">困难</option>
+		  <option value="3">极难</option>
+		</select>
+		<button class="smallButton" id="newPuzzle">新游戏</button> </br>
+		<input type="text" id="inputNo" value="" length="6" /><button class="smallButton" id="go">载入</button></br>
+		<span class="smalltext" id="puzzleNo">当前：#1234</span></br>
+		<span class="smalltext" id="puzzleLevel">难度：简单</span>
+	</div>
+	<div  class="smalltext" id="statusbar"></div>
+</div>
+<div id="sudoku">	
+	<table>
+		<tr>
+			<td class="c-grid">
+				<table class="grid">
+					<tr>
+						<td id="cell1"></td>
+						<td id="cell2"></td>
+						<td id="cell3"></td>
+					</tr>
+					<tr>
+						<td id="cell10"></td>
+						<td id="cell11"></td>
+						<td id="cell12"></td>
+					</tr>
+					<tr>
+						<td id="cell19"></td>
+						<td id="cell20"></td>
+						<td id="cell21"></td>
+					</tr>
+				</table>
+			</td>
+			<td class="c-grid">
+				<table class="grid">
+					<tr>
+						<td id="cell4"></td>
+						<td id="cell5"></td>
+						<td id="cell6"></td>
+					</tr>
+					<tr>
+						<td id="cell13"></td>
+						<td id="cell14"></td>
+						<td id="cell15"></td>
+					</tr>
+					<tr>
+						<td id="cell22"></td>
+						<td id="cell23"></td>
+						<td id="cell24"></td>
+					</tr>
+				</table>
+			</td>
+			<td class="c-grid">
+				<table class="grid">
+					<tr>
+						<td id="cell7"></td>
+						<td id="cell8"></td>
+						<td id="cell9"></td>
+					</tr>
+					<tr>
+						<td id="cell16"></td>
+						<td id="cell17"></td>
+						<td id="cell18"></td>
+					</tr>
+					<tr>
+						<td id="cell25"></td>
+						<td id="cell26"></td>
+						<td id="cell27"></td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td class="c-grid">
+				<table class="grid">
+					<tr>
+						<td id="cell28"></td>
+						<td id="cell29"></td>
+						<td id="cell30"></td>
+					</tr>
+					<tr>
+						<td id="cell37"></td>
+						<td id="cell38"></td>
+						<td id="cell39"></td>
+					</tr>
+					<tr>
+						<td id="cell46"></td>
+						<td id="cell47"></td>
+						<td id="cell48"></td>
+					</tr>
+				</table>
+			</td>
+			<td class="c-grid">
+				<table class="grid">
+					<tr>
+						<td id="cell31"></td>
+						<td id="cell32"></td>
+						<td id="cell33"></td>
+					</tr>
+					<tr>
+						<td id="cell40"></td>
+						<td id="cell41"></td>
+						<td id="cell42"></td>
+					</tr>
+					<tr>
+						<td id="cell49"></td>
+						<td id="cell50"></td>
+						<td id="cell51"></td>
+					</tr>
+				</table>
+			</td>
+			<td class="c-grid">
+				<table class="grid">
+					<tr>
+						<td id="cell34"></td>
+						<td id="cell35"></td>
+						<td id="cell36"></td>
+					</tr>
+					<tr>
+						<td id="cell43"></td>
+						<td id="cell44"></td>
+						<td id="cell45"></td>
+					</tr>
+					<tr>
+						<td id="cell52"></td>
+						<td id="cell53"></td>
+						<td id="cell54"></td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td class="c-grid">
+				<table class="grid">
+					<tr>
+						<td id="cell55"></td>
+						<td id="cell56"></td>
+						<td id="cell57"></td>
+					</tr>
+					<tr>
+						<td id="cell64"></td>
+						<td id="cell65"></td>
+						<td id="cell66"></td>
+					</tr>
+					<tr>
+						<td id="cell73"></td>
+						<td id="cell74"></td>
+						<td id="cell75"></td>
+					</tr>
+				</table>
+			</td>
+			<td class="c-grid">
+				<table class="grid">
+					<tr>
+						<td id="cell58"></td>
+						<td id="cell59"></td>
+						<td id="cell60"></td>
+					</tr>
+					<tr>
+						<td id="cell67"></td>
+						<td id="cell68"></td>
+						<td id="cell69"></td>
+					</tr>
+					<tr>
+						<td id="cell76"></td>
+						<td id="cell77"></td>
+						<td id="cell78"></td>
+					</tr>
+				</table>
+			</td>
+			<td class="c-grid">
+				<table class="grid">
+					<tr>
+						<td id="cell61"></td>
+						<td id="cell62"></td>
+						<td id="cell63"></td>
+					</tr>
+					<tr>
+						<td id="cell70"></td>
+						<td id="cell71"></td>
+						<td id="cell72"></td>
+					</tr>
+					<tr>
+						<td id="cell79"></td>
+						<td id="cell80"></td>
+						<td id="cell81"></td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+</div>
+</div>
+
+	
+<script>
+YUI({
+	modules: {
+		sudoku: {
+			fullpath: 'sudoku.js',
+			requires: [ 'node' ]
+		}
+	}
+}).use('sudoku',  'event', function(Y) {
+	var grid = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+	var puzzle = "070008000001000004002400500080030007005200400900000080009006100700000300000100040";
+	var mark = false;
+	var startTime = false;
+	var timeCount = 0;
+	var timerId = 0;
+	var undo = [];
+	var redu = [];
+	var input = false;
+	
+	var updateUI = function() {
+		var disable = '';
+		
+		disable = (undo.length > 0) ? '' : 'disabled';
+		Y.one('#undo').set('disabled', disable);
+		disable = (redo.length > 0) ? '' : 'disabled';
+		Y.one('#redo').set('disabled', disable);
+	};
+	
+	var resetPuzzle = function() {	
+		var i = 1,
+			ch = '',
+			cellnode = null;
+				
+		for (i = 1; i < 82; ++i) {
+			cellnode = Y.one('#cell' + i);
+			ch = puzzle.charAt(i - 1);
+			if (ch == '0') {
+				cellnode.setHTML('<span class="cspan"><input id="cpad' + i + '" class="cpad" maxlength="9" type="text" value="" /></span><input id="c' + i + '" class="cell" type="text" maxlength="1" size="1" value=""/>');
+				cellnode.setStyle('backgroundColor', '#FFFFFF');
+			} else {
+				cellnode.setHTML('<input id="c' + i + '" class="cell" readonly="1" type="text" maxlength="1" size="1" value="' + ch + '" />');
+				cellnode.setStyle('backgroundColor', '#D5D5D5');
+			}
+		}	
+		
+		timeCount = 0;
+		Y.one('#displayTime').setHTML('00:00:00');
+		Y.one('#statusbar').setHTML('');
+		undo = [];
+		redo = [];
+		updateUI();
+	};
+	
+	resetPuzzle();
+	
+	var zeroGrid = function() {
+		for (var i = 0; i < 9; ++i) {
+			grid[i] = 0;
+		}
+	};
+	
+	var cpadKeydown = function(e) {
+		var id = parseInt(e.target.get('id').slice(4), 10);			
+		if (id == NaN) {
+			return true;
+		}
+	
+		if (e.keyCode == 38) {	//up
+			var pre = id - 9;
+			while (pre > 0) {
+				if (puzzle.charAt(pre - 1) == '0') {
+					Y.one('#c' + pre).focus();
+					break;
+				} else {
+					pre -= 9;
+				}
+			}
+		} else if (e.keyCode == 40) {  // down
+			var next = id ;
+			while (next < 82) {
+				if (puzzle.charAt(next - 1) == '0') {
+					Y.one('#c' + next).focus();
+					break;
+				} else {
+					next += 9;
+				}
+			}
+		} 
+	};
+	
+	var cellKeydown = function(e) {		
+		var id = parseInt(e.target.get('id').slice(1), 10);			
+		if (id == NaN) {
+			return true;
+		}
+		
+		if (e.keyCode == 38) {	//up
+			if (puzzle.charAt(id - 1) == '0') {
+				Y.one('#cpad' + id).focus();
+			} else {
+				var pre = id - 9;
+				while (pre > 0) {
+					if (puzzle.charAt(pre - 1) == '0') {
+						Y.one('#c' + pre).focus();
+						break;
+					} else {
+						pre -= 9;
+					}
+				}
+			}
+		} else if (e.keyCode == 40) {  // down
+			var next = id + 9;
+			while (next < 82) {
+				if (puzzle.charAt(next - 1) == '0') {
+					Y.one('#cpad' + next).focus();
+					break;
+				} else {
+					next += 9;
+				}
+			}
+		} else if (e.keyCode == 39) {	// right
+			var right = id + 1;
+			while ((right % 9) != 1) {
+				if (puzzle.charAt(right - 1) == '0') {
+					Y.one('#c' + right).focus();
+					break;
+				} else {
+					right += 1;
+				}
+			}
+		} else if (e.keyCode == 37) {	// left
+			var left = id - 1;
+			while ((right % 9) != 0) {
+				if (puzzle.charAt(left - 1) == '0') {
+					Y.one('#c' + left).focus();
+					break;
+				} else {
+					left -= 1;
+				}
+			}
+		} else {
+			input = true;
+		}
+	};
+		
+	var cpadValueChange = function(e) {
+		if (e.newVal == '') {
+			return;
+		}
+		var newVal = parseInt(e.newVal, 10);
+		if (isNaN(newVal) || (newVal.toString() != e.newVal) || ((newVal % 10) == 0)) {
+			e.currentTarget.set('value', e.prevVal);
+		}
+	};
+	
+	var cellValueChange = function(e) {
+		var changed = false,
+			id = e.currentTarget.get('id').slice(1),
+			newVal = 0;
+		
+		if (e.newVal == '') {
+			changed = true;
+			Y.one('#cell' + id).setStyle('backgroundColor', '#FFFFFF');
+		} else {
+			newVal = parseInt(e.newVal, 10);
+			if (isNaN(newVal) || (newVal < 1) || (newVal > 9)) {
+				e.currentTarget.set('value', e.prevVal);
+			} else {
+				changed = true;
+				Y.one('#cell' + id).setStyle('backgroundColor', mark ? '#A1A1FF' : '#FFFFFF');
+			}
+		}
+		
+		if (changed && input) {
+			redo = [];
+			undo.push({id: id, prev: e.prevVal, value: e.newVal});
+			input = false;
+		}
+		
+		updateUI();
+	};
+	
+	
+	
+	var resetMark = function() {			
+		for (var i = 1; i < 82; i++) {
+			if (puzzle.charAt(i - 1) == '0') {
+				Y.one('#cell' + i).setStyle('backgroundColor', '#FFFFFF');
+			} else {
+				Y.one('#cell' + i).setStyle('backgroundColor', '#D5D5D5');
+			}
+		}
+	};
+	
+	var checkGrid = function() {
+		var i = 0,
+			value = 0,
+			solution = new Array(81);
+			
+		resetMark();
+		for (i = 1; i < 82; ++i) {
+			value = Y.one('#c' + i).get('value');
+			if (value == '') {
+				value = '0';
+			}
+			solution[i - 1] = value;
+		}
+		
+		var sudokuPuzzle = new Y.Sudoku.Puzzle(puzzle);
+		var result = sudokuPuzzle.check(solution.join(''));
+		if (result.duplicate.length == 0) {
+			if (result.empty == 0) {
+				alert('You have successfully solved the Sudoku puzzle!!! time:' + getDisplayTime());
+				if (startTime) {
+					onStartTimer();	// stop timer
+				}
+			} else {
+				alert('No mistake found!');
+			}
+		} else {
+			for (i = 0; i < result.duplicate.length; ++i) {
+				value = result.duplicate[i];
+				if (puzzle.charAt(value) == '0') {
+					Y.one('#cell' + (value + 1)).setStyle('backgroundColor', '#FF0000');
+				}
+			}
+		}
+	};
+	
+	var solvePuzzle = function() {
+		var sudokuPuzzle = new Y.Sudoku.Puzzle(puzzle);
+		var result = sudokuPuzzle.solve(puzzle);
+		if (result.solved) {
+			for (var i = 1; i < 82; ++i) {
+				if (puzzle[i - 1] == '0' && result.solution[i - 1] != '0') {
+					Y.one('#c' + i).set('value', result.solution[i - 1]);
+				}
+			}
+			undo = [];
+			redo = [];
+			updateUI();
+			Y.one('#statusbar').setHTML('<b>' + 'empty: ' + result.empty + '<br/>score: ' + result.score + '<br/>bruteForce: ' + result.bruteForce + '</b>');
+		} else {
+			Y.one('#statusbar').setHTML('<b>Wrong puzzle!</b>');
+		}
+	};
+	
+	var onNewPuzzle = function(e) {
+		var opts, sels, lv, s, pattern, tick;
+		
+		opts = Y.one('#level').get('options');
+		sels = [];
+		opts.each(function(o) {
+			if (o.get('selected') === true) {
+				sels.push(o.get('value'));
+			}
+		});
+		
+		lv = 2;
+		if (sels.length > 0) {
+			lv = parseInt(sels.pop(), 10);
+		}
+		tick = Date.now();
+		s = Y.Sudoku.generate(lv);
+		pattern = /^\d{81}$/;
+		if (pattern.test(s)){
+			puzzle = s;
+			resetPuzzle();
+			tick = Date.now() - tick;
+			Y.one('#statusbar').setHTML('Generate game in ' + tick + 'ms');
+		} else {
+			Y.one('#statusbar').setHTML('<p>' + s + '</p>');
+		}
+	};
+
+	var onLoadPuzzle = function() {
+	};
+
+	var onStartTimer = function() {
+		startTime = !startTime;
+		if (startTime) {
+			Y.one('#startTimer').addClass('togglePressed');
+			Y.one('#startTimer').set('text', '停止计时');
+			timerId = setTimeout(countUp, 1000);
+		} else {
+			Y.one('#startTimer').set('text', '开始计时');
+			Y.one('#startTimer').removeClass('togglePressed');
+			clearTimeout(timerId);
+		}
+	};
+	
+	var getDisplayTime = function() {
+		var hours = 0, minutes = 0, seconds = 0;
+		
+		hours = Math.floor(timeCount / 3600);
+		minutes = Math.floor((timeCount - hours * 3600) / 60);
+		seconds = Math.floor((timeCount - hours * 3600 - minutes * 60));
+		
+		return (hours < 10 ? "0" : "") + hours + ":" + (minutes < 10 ? "0" : "") + minutes + ":" + (seconds < 10 ? "0" : "") + seconds
+	};
+	
+	var countUp = function() {
+		
+		
+		if (startTime) {
+			timeCount++;
+			
+		
+			Y.one('#displayTime').setHTML(getDisplayTime());
+			timerId = setTimeout(countUp, 1000);
+		}
+		
+	};
+	
+	var onUndo = function(e) {
+		var doing = null;
+		
+		if (undo.length > 0) {
+			doing = undo.pop();
+			input = false;
+			Y.one('#c' + doing.id).set('value', doing.prev);
+			if (doing.prev == '') {
+				Y.one('#cell' + doing.id).setStyle('backgroundColor', '#FFFFFF');
+			} else {
+				Y.one('#cell' + doing.id).setStyle('backgroundColor', mark ? '#A1A1FF' : '#FFFFFF');
+			}
+			redo.push(doing);
+		}
+		updateUI();
+	};
+	
+	var onRedo = function(e) {
+		var doing = null;
+		if (redo.length > 0) {
+			doing = redo.pop();
+			input = false;
+			Y.one('#c' + doing.id).set('value', doing.value);
+			if (doing.value == '') {
+				Y.one('#cell' + doing.id).setStyle('backgroundColor', '#FFFFFF');
+			} else {
+				Y.one('#cell' + doing.id).setStyle('backgroundColor', mark ? '#A1A1FF' : '#FFFFFF');
+			}
+			undo.push(doing);
+		}
+		updateUI();
+	};
+	
+	updateUI();
+	
+	Y.on('click', checkGrid, '#checkGrid');
+	Y.on('click', function(e) {
+		mark = !mark;
+		if (mark) {
+			Y.one('#markCheck').addClass('togglePressed');
+		} else {
+			Y.one('#markCheck').removeClass('togglePressed');
+		}
+	}, '#markCheck');
+	
+	Y.on('click', resetMark, '#clearMark');
+	Y.on('click', resetPuzzle, '#resetPuzzle');
+	Y.on('click', solvePuzzle, '#solvePuzzle');
+	Y.on('click', onNewPuzzle, '#newPuzzle');
+	Y.on('click', onLoadPuzzle, '#go');
+	Y.on('click', onStartTimer, '#startTimer');
+	Y.on('click', onUndo, '#undo');
+	Y.on('click', onRedo, '#redo');
+	
+	
+	Y.delegate('keydown', cpadKeydown, '#sudoku', '.cpad');
+	Y.delegate('keydown', cellKeydown, '#sudoku', '.cell');
+	Y.delegate('valuechange', cpadValueChange, '#sudoku', '.cpad');
+	Y.delegate('valuechange', cellValueChange, '#sudoku', '.cell');
+});
+</script>
+</body>
+</html>
